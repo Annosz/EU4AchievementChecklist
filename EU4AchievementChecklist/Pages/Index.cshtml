@@ -1,0 +1,80 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (String.IsNullOrEmpty(Model.SteamID))
+{
+    <form method="post">
+        <p>
+            Login with your Steam account to show completion info:
+            <input type="text" name="sortOrder" value="@Model.CurrentSort" hidden />
+            <input type="submit" value="Show completion!" />
+        </p>
+
+    </form>
+}
+else
+{
+    <p>Steam user logged in with ID @Model.SteamID</p>
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                <!-- Image -->
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                    @Html.DisplayNameFor(model => Model.Achievements[0].Name)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DescriptionSort">
+                    @Html.DisplayNameFor(model => Model.Achievements[0].Description)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DifficultySort">
+                    @Html.DisplayNameFor(model => Model.Achievements[0].Difficulty)
+                </a>
+            </th>
+            @if (!String.IsNullOrEmpty(Model.SteamID))
+            {
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.AchievedSort">
+                        @Html.DisplayNameFor(model => Model.Achievements[0].Achieved)
+                    </a>
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Achievements)
+        {
+            <tr>
+                <td>
+                    <img src="@string.Concat("https://eu4.paradoxwikis.com", item.Image)" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)<br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)<br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Difficulty)<br />
+                </td>
+
+                @if (!String.IsNullOrEmpty(Model.SteamID))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Achieved)<br />
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
