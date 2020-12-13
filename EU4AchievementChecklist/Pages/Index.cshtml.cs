@@ -49,23 +49,16 @@ namespace EU4AchievementChecklist.Pages
 
         public IActionResult OnPost(string sortOrder)
         {
-            return new ChallengeResult(
-                "Steam",
-                new AuthenticationProperties
-                {
-                    RedirectUri = Url.Action("Index", new { sortOrder = sortOrder })
-                });
+            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, "Steam");
         }
 
-        public async Task OnGetAsync(string sortOrder, string userName, string access_token)
+        public async Task OnGetAsync(string sortOrder)
         {
             await CreateWikiPart();
 
             var authResult = await HttpContext.AuthenticateAsync(SteamAuthenticationDefaults.AuthenticationScheme);
-            if (authResult.Succeeded)
+            if (authResult.Succeeded && User.Identity.IsAuthenticated)
             {
-                var accessToken = await HttpContext.GetTokenAsync(SteamAuthenticationDefaults.AuthenticationScheme, "access_token");
-
                 SteamID = authResult.Principal.FindFirstValue(ClaimTypes.NameIdentifier).Split("/").Last();
                 await CreateSteamPart();
             }
@@ -169,7 +162,6 @@ namespace EU4AchievementChecklist.Pages
 
             SteamClient client = new SteamClient();
             client.Authenticator = APIKeyAuthenticator.ForProtectedResource(_configuration.GetValue("SteamAPIKey", ""));
-            //client.Authenticator = UserAuthenticator.ForProtectedResource(boh);
 
             SteamCommunity.PlayerAchievements response = SteamCommunity.GetPlayerAchievements(client, SteamID, 236850);
 

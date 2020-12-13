@@ -21,16 +21,13 @@ namespace EU4AchievementChecklist
         {
             services
                 .AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = SteamAuthenticationDefaults.AuthenticationScheme;
-                })
+                    {
+                        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = SteamAuthenticationDefaults.AuthenticationScheme;
+                    })
                 .AddCookie()
-                .AddSteam(SteamAuthenticationDefaults.AuthenticationScheme, steamOptions =>
-                {
-                    steamOptions.ApplicationKey = _configuration.GetValue("SteamAPIKey", "");
-                    steamOptions.ClaimsIssuer = SteamAuthenticationDefaults.Authority;
-                });
+                .AddSteam();
 
              services.AddRazorPages();
         }
@@ -53,7 +50,6 @@ namespace EU4AchievementChecklist
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
