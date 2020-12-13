@@ -1,27 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using AspNet.Security.OpenId.Steam;
-using EU4AchievementChecklist.Helpers.Extensions;
 using EU4AchievementChecklist.Models;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SteamSharp;
 using SteamSharp.Authenticators;
 
@@ -42,11 +32,13 @@ namespace EU4AchievementChecklist.Pages
 
         public IndexModel() { }
 
+        [System.Web.Mvc.ValidateAntiForgeryToken]
         public IActionResult OnPost(string sortOrder)
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/" }, "Steam");
         }
 
+        [System.Web.Mvc.ValidateAntiForgeryToken]
         public async Task OnGetAsync(string sortOrder)
         {
             await CreateWikiPart();
