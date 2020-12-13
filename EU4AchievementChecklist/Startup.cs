@@ -5,17 +5,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace EU4AchievementChecklist
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; }
-
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public Startup() { }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -27,9 +23,13 @@ namespace EU4AchievementChecklist
                         options.DefaultChallengeScheme = SteamAuthenticationDefaults.AuthenticationScheme;
                     })
                 .AddCookie()
-                .AddSteam();
+                .AddSteam(SteamAuthenticationDefaults.AuthenticationScheme, steamOptions =>
+                {
+                    steamOptions.ApplicationKey = Environment.GetEnvironmentVariable("SteamAPIKey");
+                    steamOptions.ClaimsIssuer = SteamAuthenticationDefaults.Authority;
+                });
 
-             services.AddRazorPages();
+            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

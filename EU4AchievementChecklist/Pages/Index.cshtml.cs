@@ -30,8 +30,6 @@ namespace EU4AchievementChecklist.Pages
     [Authorize]
     public class IndexModel : PageModel
     {
-        public IConfiguration _configuration { get; }
-
         public List<Achievement> Achievements { get; set; } = new List<Achievement>();
 
         public string SteamID { get; set; }
@@ -42,10 +40,7 @@ namespace EU4AchievementChecklist.Pages
         public string AchievedSort { get; set; }
         public string CurrentSort { get; set; }
 
-        public IndexModel(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public IndexModel() { }
 
         public IActionResult OnPost(string sortOrder)
         {
@@ -161,7 +156,7 @@ namespace EU4AchievementChecklist.Pages
                 return;
 
             SteamClient client = new SteamClient();
-            client.Authenticator = APIKeyAuthenticator.ForProtectedResource(_configuration.GetValue("SteamAPIKey", ""));
+            client.Authenticator = APIKeyAuthenticator.ForProtectedResource(Environment.GetEnvironmentVariable("SteamAPIKey"));
 
             SteamCommunity.PlayerAchievements response = SteamCommunity.GetPlayerAchievements(client, SteamID, 236850);
 
