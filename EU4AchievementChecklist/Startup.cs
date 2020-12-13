@@ -1,4 +1,5 @@
 using AspNet.Security.OpenId.Steam;
+using EU4AchievementChecklist.Helpers.Middlewares;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,10 +42,9 @@ namespace EU4AchievementChecklist
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                app.UseReverseProxyHttpsEnforcer();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
