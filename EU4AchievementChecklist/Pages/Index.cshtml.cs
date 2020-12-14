@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AspNet.Security.OpenId.Steam;
 using EU4AchievementChecklist.Models;
-using HtmlAgilityPack;
+using EU4AchievementChecklist.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +19,13 @@ namespace EU4AchievementChecklist.Pages
     [Authorize]
     public class IndexModel : PageModel
     {
+        public static List<string> DifficultyOrder = new List<string>() { "VE", "E", "M", "H", "VH", "I" };
+
+        public WikiService _wiki { get; set; }
+        public SteamService _steam { get; set; }
         public List<Achievement> Achievements { get; set; } = new List<Achievement>();
 
-        public string SteamID { get; set; }
+        public bool SteamSignedIn { get; set; } = false;
 
         public string NameSort { get; set; }
         public string DescriptionSort { get; set; }
@@ -30,7 +33,11 @@ namespace EU4AchievementChecklist.Pages
         public string AchievedSort { get; set; }
         public string CurrentSort { get; set; }
 
-        public IndexModel() { }
+        public IndexModel(WikiService wiki, SteamService steam)
+        {
+            _wiki = wiki;
+            _steam = steam;
+        }
 
         public IActionResult OnPost(string sortOrder)
         {
@@ -39,19 +46,17 @@ namespace EU4AchievementChecklist.Pages
 
         public async Task OnGetAsync(string sortOrder)
         {
-            await CreateWikiPart();
+            Achievements = await _wiki.CreateWikiPart();
 
-            var authResult = await HttpContext.AuthenticateAsync(SteamAuthenticationDefaults.AuthenticationScheme);
-            if (authResult.Succeeded && User.Identity.IsAuthenticated)
+            if (SteamSignedIn = await _steam.Authenticate(HttpContext))
             {
-                SteamID = authResult.Principal.FindFirstValue(ClaimTypes.NameIdentifier).Split("/").Last();
-                await CreateSteamPart();
+                 await _steam.AttachCompletionToAchievements(Achievements);
             }
 
-            Order(sortOrder);
+            OrderAchievements(sortOrder);
         }
 
-        private void Order(string sortOrder)
+        private void OrderAchievements(string sortOrder)
         {
             CurrentSort = sortOrder;
 
@@ -75,10 +80,10 @@ namespace EU4AchievementChecklist.Pages
                     Achievements = Achievements.OrderByDescending(a => a.Description).ToList();
                     break;
                 case "Difficulty":
-                    Achievements = Achievements.OrderBy(a => a.Difficulty).ToList();
+                    Achievements = Achievements.OrderBy(a => DifficultyOrder.IndexOf(a.Difficulty)).ToList();
                     break;
                 case "Difficulty_desc":
-                    Achievements = Achievements.OrderByDescending(a => a.Difficulty).ToList();
+                    Achievements = Achievements.OrderByDescending(a => DifficultyOrder.IndexOf(a.Difficulty)).ToList();
                     break;
                 case "Achieved":
                     Achievements = Achievements.OrderBy(a => a.Achieved).ToList();
@@ -90,67 +95,6 @@ namespace EU4AchievementChecklist.Pages
                     Achievements = Achievements.OrderBy(a => a.Name).ToList();
                     break;
             }
-        }
-
-        private async Task CreateWikiPart()
-        {
-            using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage response = await client.GetAsync("https://eu4.paradoxwikis.com/Achievements"))
-            using (HttpContent content = response.Content)
-            {
-                string htmlString = await content.ReadAsStringAsync();
-
-                HtmlDocument doc = new HtmlDocument();
-                doc.LoadHtml(htmlString);
-
-                foreach (HtmlNode table in doc.DocumentNode.SelectNodes("//table[contains(@class, 'sortable')]"))
-                {
-                    foreach (HtmlNode row in table.SelectNodes(".//tr[position()>1]"))
-                    {
-                        Achievement achievement = new Achievement();
-
-                        HtmlNodeCollection htmlNodes = row.SelectNodes("td");
-                        for (int i = 0; i < htmlNodes.Count; i++)
-                        {
-                            HtmlNode cell = htmlNodes[i];
-
-                            switch (i)
-                            {
-                                case (0):
-                                    achievement.Image = cell.SelectSingleNode(".//img").Attributes["src"].Value;
-                                    achievement.Name = cell.SelectSingleNode(".//div[@style='font-weight: bold; font-size:larger;']").InnerText;
-                                    achievement.Description = cell.SelectSingleNode(".//div[@style='line-height: 1.2em; font-style: italic; font-size:smaller;']").InnerText;
-                                    break;
-                                case (1):
-                                case (2):
-                                case (3):
-                                case (4):
-                                case (5):
-                                case (6):
-                                    achievement.Difficulty = cell.InnerText;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-
-                        Achievements.Add(achievement);
-                    }
-                }
-            }
-        }
-
-        private async Task CreateSteamPart()
-        {
-            if (string.IsNullOrEmpty(SteamID))
-                return;
-
-            SteamClient client = new SteamClient();
-            client.Authenticator = APIKeyAuthenticator.ForProtectedResource(Environment.GetEnvironmentVariable("SteamAPIKey"));
-
-            SteamCommunity.PlayerAchievements response = SteamCommunity.GetPlayerAchievements(client, SteamID, 236850);
-
-            Achievements.ForEach(a => a.Achieved = response.Achievements.FirstOrDefault(ac => ac.Name == a.Name)?.IsAchieved ?? false);
         }
     }
 }

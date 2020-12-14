@@ -1,5 +1,6 @@
 using AspNet.Security.OpenId.Steam;
 using EU4AchievementChecklist.Helpers.Middlewares;
+using EU4AchievementChecklist.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,9 @@ namespace EU4AchievementChecklist
                     steamOptions.ApplicationKey = Environment.GetEnvironmentVariable("SteamAPIKey");
                     steamOptions.ClaimsIssuer = SteamAuthenticationDefaults.Authority;
                 });
+
+            services.AddScoped<WikiService>();
+            services.AddScoped<SteamService>();
 
             services.AddRazorPages();
         }

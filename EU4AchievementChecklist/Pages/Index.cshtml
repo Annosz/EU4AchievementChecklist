@@ -4,7 +4,7 @@
     ViewData["Title"] = "Achievements";
 }
 
-@if (String.IsNullOrEmpty(Model.SteamID))
+@if (!Model.SteamSignedIn)
 {
     <form method="post" class="steam-login">
         <p> Sign in with your Steam account to show completion info </p>
@@ -14,7 +14,7 @@
 }
 else
 {
-    <p>Steam user logged in with ID @Model.SteamID</p>
+    <p>Steam user logged in</p>
 }
 
 <table>
@@ -38,7 +38,7 @@ else
                     @Html.DisplayNameFor(model => Model.Achievements[0].Difficulty)
                 </a>
             </th>
-            @if (!String.IsNullOrEmpty(Model.SteamID))
+            @if (Model.SteamSignedIn)
             {
                 <th>
                     <a asp-page="./Index" asp-route-sortOrder="@Model.AchievedSort">
@@ -65,7 +65,7 @@ else
                     @Html.DisplayFor(modelItem => item.Difficulty)<br />
                 </td>
 
-                @if (!String.IsNullOrEmpty(Model.SteamID))
+                @if (Model.SteamSignedIn)
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item.Achieved)<br />
