@@ -32,25 +32,23 @@ namespace EU4AchievementChecklist.Pages
 
         public IndexModel() { }
 
-        [System.Web.Mvc.ValidateAntiForgeryToken]
         public IActionResult OnPost(string sortOrder)
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/" }, "Steam");
         }
 
-        [System.Web.Mvc.ValidateAntiForgeryToken]
         public async Task OnGetAsync(string sortOrder)
         {
-            //await CreateWikiPart();
+            await CreateWikiPart();
 
-            //var authResult = await HttpContext.AuthenticateAsync(SteamAuthenticationDefaults.AuthenticationScheme);
-            //if (authResult.Succeeded && User.Identity.IsAuthenticated)
-            //{
-            //    SteamID = authResult.Principal.FindFirstValue(ClaimTypes.NameIdentifier).Split("/").Last();
-            //    await CreateSteamPart();
-            //}
+            var authResult = await HttpContext.AuthenticateAsync(SteamAuthenticationDefaults.AuthenticationScheme);
+            if (authResult.Succeeded && User.Identity.IsAuthenticated)
+            {
+                SteamID = authResult.Principal.FindFirstValue(ClaimTypes.NameIdentifier).Split("/").Last();
+                await CreateSteamPart();
+            }
 
-            //Order(sortOrder);
+            Order(sortOrder);
         }
 
         private void Order(string sortOrder)

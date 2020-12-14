@@ -1,19 +1,15 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Achievements";
 }
 
 @if (String.IsNullOrEmpty(Model.SteamID))
 {
-    <form method="post">
-        @Html.AntiForgeryToken()
-        <p>
-            Login with your Steam account to show completion info:
-            <input type="text" name="sortOrder" value="@Model.CurrentSort" hidden />
-            <input type="submit" value="Show completion!" />
-        </p>
-
+    <form method="post" class="steam-login">
+        <p> Sign in with your Steam account to show completion info </p>
+        <input type="text" name="sortOrder" value="@Model.CurrentSort" hidden />
+        <input type="image" src="~/assets/steam-signing.png" />
     </form>
 }
 else
@@ -56,9 +52,9 @@ else
         @foreach (var item in Model.Achievements)
         {
             <tr>
-                <!--<td>
+                <td>
                     <img src="@string.Concat("https://eu4.paradoxwikis.com", item.Image)" />
-                </td>-->
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)<br />
                 </td>

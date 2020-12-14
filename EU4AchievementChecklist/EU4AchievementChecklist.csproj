@@ -14,4 +14,13 @@
     <PackageReference Include="SteamSharp" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\assets\background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\steam-signing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
