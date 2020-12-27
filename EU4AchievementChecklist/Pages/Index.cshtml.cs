@@ -41,7 +41,7 @@ namespace EU4AchievementChecklist.Pages
 
         public IActionResult OnPost(string sortOrder)
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, "Steam");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.PageLink() }, "Steam");
         }
 
         public async Task OnGetAsync(string sortOrder)
