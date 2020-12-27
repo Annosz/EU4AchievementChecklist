@@ -46,9 +46,11 @@ namespace EU4AchievementChecklist
             else
             {
                 app.UseExceptionHandler("/Error");
+                app.UseHsts();
                 app.UseReverseProxyHttpsEnforcer();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
