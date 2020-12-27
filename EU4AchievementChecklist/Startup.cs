@@ -4,6 +4,7 @@ using EU4AchievementChecklist.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +35,10 @@ namespace EU4AchievementChecklist
             services.AddScoped<WikiService>();
             services.AddScoped<SteamService>();
 
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorPagesOptions(o =>
+            {
+                o.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
