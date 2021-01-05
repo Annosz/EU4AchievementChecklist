@@ -146,6 +146,10 @@ table tr:nth-child(even) {
     background-color: rgba(242, 242, 242, 0.7);
 }
 
+.about ul {
+    margin-top: -.75rem;
+}
+
 /**********/
 /* Footer */
 /**********/
@@ -160,4 +164,11 @@ table tr:nth-child(even) {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.footer a {
+    color: antiquewhite !important;
+}
+.footer a:hover {
+    color: black !important;
 }
