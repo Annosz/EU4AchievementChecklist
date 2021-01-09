@@ -20,27 +20,27 @@ else
 <table>
     <thead>
         <tr>
-            <th>
+            <th class="image-col">
                 <!-- Image -->
             </th>
-            <th>
+            <th class="name-col">
                 <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Name)
                 </a>
             </th>
-            <th>
+            <th class="description-col">
                 <a asp-page="./Index" asp-route-sortOrder="@Model.DescriptionSort">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Description)
                 </a>
             </th>
-            <th>
+            <th class="difficulty-col">
                 <a asp-page="./Index" asp-route-sortOrder="@Model.DifficultySort">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Difficulty)
                 </a>
             </th>
             @if (Model.SteamSignedIn)
             {
-                <th>
+                <th class="achieved-col">
                     <a asp-page="./Index" asp-route-sortOrder="@Model.AchievedSort">
                         @Html.DisplayNameFor(model => Model.Achievements[0].Achieved)
                     </a>
@@ -52,23 +52,26 @@ else
         @foreach (var item in Model.Achievements)
         {
             <tr>
-                <td>
+                <td class="image-col">
                     <img src="@string.Concat("https://eu4.paradoxwikis.com", item.Image)" />
                 </td>
-                <td>
+                <td class="name-col">
                     @Html.DisplayFor(modelItem => item.Name)<br />
                 </td>
-                <td>
+                <td class="description-col">
                     @Html.DisplayFor(modelItem => item.Description)<br />
                 </td>
-                <td>
+                <td class="difficulty-col">
                     @Html.DisplayFor(modelItem => item.Difficulty)<br />
                 </td>
 
                 @if (Model.SteamSignedIn)
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Achieved)<br />
+                    <td class="achieved-col">
+                        @if(item.Achieved)
+                        {
+                            <img src="https://eu4.paradoxwikis.com/images/d/da/Ledger_yes.png" />
+                        }
                     </td>
                 }
             </tr>

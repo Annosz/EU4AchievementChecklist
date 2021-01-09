@@ -16,7 +16,7 @@ using SteamSharp.Authenticators;
 
 namespace EU4AchievementChecklist.Pages
 {
-    [Authorize]
+    [IgnoreAntiforgeryToken(Order = 2000)]
     public class IndexModel : PageModel
     {
         public static List<string> DifficultyOrder = new List<string>() { "VE", "E", "M", "H", "VH", "I" };
