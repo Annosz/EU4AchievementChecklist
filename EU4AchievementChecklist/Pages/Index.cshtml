@@ -6,15 +6,14 @@
 
 @if (!Model.SteamSignedIn)
 {
-    <form method="post" class="steam-login">
+    <a asp-page="./Login" asp-route-sortOrder="@Model.NameSort">
         <p> Sign in with your Steam account to show completion info </p>
-        <input type="text" name="sortOrder" value="@Model.CurrentSort" hidden />
         <input type="image" src="~/assets/steam-signing.png" />
-    </form>
+    </a>
 }
 else
 {
-    <p>Steam user logged in</p>
+<p>Steam user logged in</p>
 }
 
 <table>
@@ -68,7 +67,7 @@ else
                 @if (Model.SteamSignedIn)
                 {
                     <td class="achieved-col">
-                        @if(item.Achieved)
+                        @if (item.Achieved)
                         {
                             <img src="https://eu4.paradoxwikis.com/images/d/da/Ledger_yes.png" />
                         }

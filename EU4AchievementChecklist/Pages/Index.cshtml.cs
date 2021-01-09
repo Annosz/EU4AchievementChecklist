@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web.Mvc;
-using AspNet.Security.OpenId.Steam;
 using EU4AchievementChecklist.Models;
 using EU4AchievementChecklist.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SteamSharp;
-using SteamSharp.Authenticators;
 
 namespace EU4AchievementChecklist.Pages
 {
-    [IgnoreAntiforgeryToken(Order = 2000)]
     public class IndexModel : PageModel
     {
         public static List<string> DifficultyOrder = new List<string>() { "VE", "E", "M", "H", "VH", "I" };
@@ -37,11 +28,6 @@ namespace EU4AchievementChecklist.Pages
         {
             _wiki = wiki;
             _steam = steam;
-        }
-
-        public IActionResult OnPost(string sortOrder)
-        {
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.PageLink() }, "Steam");
         }
 
         public async Task OnGetAsync(string sortOrder)
