@@ -8,7 +8,7 @@ namespace EU4AchievementChecklist.Pages
     {
         public IActionResult OnGet(string sortOrder)
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Page("/Index", values: new { sortOrder }) }, "Steam");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Page("/Index", pageHandler: null, values: new { sortOrder }, protocol: Request.Scheme) }, "Steam");
         }
     }
 }

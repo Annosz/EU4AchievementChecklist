@@ -6,7 +6,7 @@
 
 @if (!Model.SteamSignedIn)
 {
-    <a asp-page="./Login" asp-route-sortOrder="@Model.NameSort">
+    <a asp-page="./Login" asp-route-sortOrder="@Model.NameSort" class="steam-login">
         <p> Sign in with your Steam account to show completion info </p>
         <input type="image" src="~/assets/steam-signing.png" />
     </a>
