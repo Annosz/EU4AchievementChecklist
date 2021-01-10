@@ -44,6 +44,8 @@ namespace EU4AchievementChecklist.Services
                                 case (3):
                                 case (4):
                                 case (5):
+                                    achievement.Version = cell.InnerText;
+                                    break;
                                 case (6):
                                     achievement.Difficulty = cell.InnerText;
                                     break;

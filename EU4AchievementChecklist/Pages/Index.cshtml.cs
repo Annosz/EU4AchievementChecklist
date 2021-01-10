@@ -21,6 +21,7 @@ namespace EU4AchievementChecklist.Pages
         public string NameSort { get; set; }
         public string DescriptionSort { get; set; }
         public string DifficultySort { get; set; }
+        public string VersionSort { get; set; }
         public string PercentageSort { get; set; }
         public string AchievedSort { get; set; }
         public string CurrentSort { get; set; }
@@ -52,6 +53,7 @@ namespace EU4AchievementChecklist.Pages
             NameSort = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "Name";
             DescriptionSort = sortOrder == "Description" ? "Description_desc" : "Description";
             DifficultySort = sortOrder == "Difficulty" ? "Difficulty_desc" : "Difficulty";
+            VersionSort = sortOrder == "Version" ? "Version_desc" : "Version";
             PercentageSort = sortOrder == "Percentage" ? "Percentage_desc" : "Percentage";
             AchievedSort = sortOrder == "Achieved" ? "Achieved_desc" : "Achieved";
 
@@ -74,6 +76,12 @@ namespace EU4AchievementChecklist.Pages
                     break;
                 case "Difficulty_desc":
                     Achievements = Achievements.OrderByDescending(a => DifficultyOrder.IndexOf(a.Difficulty)).ToList();
+                    break;
+                case "Version":
+                    Achievements = Achievements.OrderBy(a => a.Version.Length).ThenBy(a => double.Parse(a.Version.Replace(".", ","))).ToList();
+                    break;
+                case "Version_desc":
+                    Achievements = Achievements.OrderByDescending(a => a.Version.Length).ThenByDescending(a => double.Parse(a.Version.Replace(".", ","))).ToList();
                     break;
                 case "Percentage":
                     Achievements = Achievements.OrderBy(a => a.Percentage).ToList();

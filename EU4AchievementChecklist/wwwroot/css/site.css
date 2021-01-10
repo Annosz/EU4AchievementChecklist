@@ -153,18 +153,22 @@ table .name-col {
     width: 20%;
 }
 table .description-col {
-    width: 50%;
+    width: 48%;
 }
 table .difficulty-col {
-    width: 10%;
+    width: 8%;
+    text-align: center;
+}
+table .version-col {
+    width: 8%;
     text-align: center;
 }
 table .percentage-col {
-    width: 10%;
+    width: 8%;
     text-align: center;
 }
 table .achieved-col {
-    width: 10%;
+    width: 8%;
     text-align: center;
 }
 

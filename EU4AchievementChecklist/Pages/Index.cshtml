@@ -39,6 +39,11 @@ else
                     @Html.DisplayNameFor(model => Model.Achievements[0].Difficulty)
                 </a>
             </th>
+            <th class="version-col">
+                <a asp-page="./Index" asp-route-sortOrder="@Model.VersionSort">
+                    @Html.DisplayNameFor(model => Model.Achievements[0].Version)
+                </a>
+            </th>
             <th class="percentage-col">
                 <a asp-page="./Index" asp-route-sortOrder="@Model.PercentageSort">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Percentage)
@@ -70,8 +75,11 @@ else
             <td class="difficulty-col">
                 @Html.DisplayFor(modelItem => item.Difficulty)<br />
             </td>
+            <td class="version-col">
+                @Html.DisplayFor(modelItem => item.Version)<br />
+            </td>
             <td class="percentage-col">
-                @Html.DisplayFor(modelItem => item.PercentageString) %<br />
+                @Html.DisplayFor(modelItem => item.PercentageString)%<br />
             </td>
             @if (Model.SteamSignedIn)
             {
