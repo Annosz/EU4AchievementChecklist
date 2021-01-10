@@ -21,6 +21,7 @@ namespace EU4AchievementChecklist.Pages
         public string NameSort { get; set; }
         public string DescriptionSort { get; set; }
         public string DifficultySort { get; set; }
+        public string PercentageSort { get; set; }
         public string AchievedSort { get; set; }
         public string CurrentSort { get; set; }
 
@@ -33,6 +34,8 @@ namespace EU4AchievementChecklist.Pages
         public async Task OnGetAsync(string sortOrder)
         {
             Achievements = await _wiki.CreateWikiPart();
+
+            await _steam.AttachPercentageToAchievements(Achievements);
 
             if (SteamSignedIn = await _steam.Authenticate(HttpContext))
             {
@@ -49,6 +52,7 @@ namespace EU4AchievementChecklist.Pages
             NameSort = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "Name";
             DescriptionSort = sortOrder == "Description" ? "Description_desc" : "Description";
             DifficultySort = sortOrder == "Difficulty" ? "Difficulty_desc" : "Difficulty";
+            PercentageSort = sortOrder == "Percentage" ? "Percentage_desc" : "Percentage";
             AchievedSort = sortOrder == "Achieved" ? "Achieved_desc" : "Achieved";
 
             switch (sortOrder)
@@ -70,6 +74,12 @@ namespace EU4AchievementChecklist.Pages
                     break;
                 case "Difficulty_desc":
                     Achievements = Achievements.OrderByDescending(a => DifficultyOrder.IndexOf(a.Difficulty)).ToList();
+                    break;
+                case "Percentage":
+                    Achievements = Achievements.OrderBy(a => a.Percentage).ToList();
+                    break;
+                case "Percentage_desc":
+                    Achievements = Achievements.OrderByDescending(a => a.Percentage).ToList();
                     break;
                 case "Achieved":
                     Achievements = Achievements.OrderBy(a => a.Achieved).ToList();
