@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EU4AchievementChecklist.Services
@@ -44,10 +45,10 @@ namespace EU4AchievementChecklist.Services
                                 case (3):
                                 case (4):
                                 case (5):
-                                    achievement.Version = cell.InnerText;
+                                    achievement.Version = Regex.Replace(cell.InnerText, @"\s+", "");
                                     break;
                                 case (6):
-                                    achievement.Difficulty = cell.InnerText;
+                                    achievement.Difficulty = Regex.Replace(cell.InnerText, @"\s+", "");
                                     break;
                                 default:
                                     break;
