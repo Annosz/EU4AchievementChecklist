@@ -1,6 +1,5 @@
 using AspNet.Security.OpenId.Steam;
 using EU4AchievementChecklist.Helpers.Middlewares;
-using EU4AchievementChecklist.Helpers.Misc;
 using EU4AchievementChecklist.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -24,8 +23,10 @@ namespace EU4AchievementChecklist
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-                options.OnAppendCookie = cookieContext => SameSiteCookieCompatibility.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-                options.OnDeleteCookie = cookieContext => SameSiteCookieCompatibility.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+                options.OnAppendCookie = cookieContext =>
+                    CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+                options.OnDeleteCookie = cookieContext =>
+                    CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
             });
 
             services
@@ -75,6 +76,42 @@ namespace EU4AchievementChecklist
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+        }
+
+        private void CheckSameSite(HttpContext httpContext, CookieOptions options)
+        {
+            if (options.SameSite == SameSiteMode.None)
+            {
+                var userAgent = httpContext.Request.Headers["User-Agent"].ToString();
+                if (DisallowsSameSiteNone(userAgent))
+                {
+                    options.SameSite = SameSiteMode.Unspecified;
+                }
+            }
+        }
+
+        private static bool DisallowsSameSiteNone(string userAgent)
+        {
+            // IOS
+            if (userAgent.Contains("CPU iPhone OS 12") || userAgent.Contains("iPad; CPU OS 12"))
+            {
+                return true;
+            }
+
+            // Mac OS
+            if (userAgent.Contains("Macintosh; Intel Mac OS X 10_14") &&
+                userAgent.Contains("Version/") && userAgent.Contains("Safari"))
+            {
+                return true;
+            }
+
+            // Chrome
+            if (userAgent.Contains("Chrome"))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
