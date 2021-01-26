@@ -6,7 +6,7 @@
 
 @if (!Model.SteamSignedIn)
 {
-<a asp-page="./Login" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" class="steam-login">
+<a asp-page="./Login" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved" class="steam-login">
     <p>Sign in with your Steam account to show completion info</p>
     <input type="image" src="~/assets/steam-signing.png" />
 </a>
@@ -18,25 +18,27 @@ else
 </div>
 }
 
-<form action="" method="get">
-    <input asp-for="Sort" hidden />
-    <div>
-        Show achievements earnable on version
-        <select asp-for="Version" asp-items="@Model.VersionFilterList"><option value="">(none)</option></select>
-    </div>
-    <div>
-        Show achievements with not higher difficulty than
-        <select asp-for="Difficulty" asp-items="@Model.DifficultyFilterList"><option value="">(none)</option></select>
-    </div>
-    @if (Model.SteamSignedIn)
-    {
-    <div>
-        Show achievements that are 
-        <select asp-for="Achieved" asp-items="@Model.AchievedFilterList"><option value="">(none)</option></select>
-    </div>
-    }
-    <button type="submit">Filter</button>
-</form>
+<div class="filter-area">
+    <form action="" method="get" class="filter-container">
+        <input asp-for="Sort" hidden />
+        <div class="filter-element">
+            Show achievements earnable on version
+            <select asp-for="Version" asp-items="@Model.VersionFilterList"><option value="">(none)</option></select>
+        </div>
+        <div class="filter-element">
+            Show achievements not more difficult than
+            <select asp-for="Difficulty" asp-items="@Model.DifficultyFilterList"><option value="">(none)</option></select>
+        </div>
+        @if (Model.SteamSignedIn)
+        {
+            <div class="filter-element">
+                Show achievements that are
+                <select asp-for="Achieved" asp-items="@Model.AchievedFilterList"><option value="">(none)</option></select>
+            </div>
+        }
+        <button type="submit" class="filter-button">Filter</button>
+    </form>
+</div>
 
 
 <table>
@@ -46,34 +48,34 @@ else
                 <!-- Image -->
             </th>
             <th class="name-col">
-                <a asp-page="./Index" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty">
+                <a asp-page="./Index" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Name)
                 </a>
             </th>
             <th class="description-col">
-                <a asp-page="./Index" asp-route-Sort="@Model.DescriptionSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty">
+                <a asp-page="./Index" asp-route-Sort="@Model.DescriptionSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Description)
                 </a>
             </th>
             <th class="difficulty-col">
-                <a asp-page="./Index" asp-route-Sort="@Model.DifficultySort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty">
+                <a asp-page="./Index" asp-route-Sort="@Model.DifficultySort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Difficulty)
                 </a>
             </th>
             <th class="version-col">
-                <a asp-page="./Index" asp-route-Sort="@Model.VersionSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty">
+                <a asp-page="./Index" asp-route-Sort="@Model.VersionSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Version)
                 </a>
             </th>
             <th class="percentage-col">
-                <a asp-page="./Index" asp-route-Sort="@Model.PercentageSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty">
+                <a asp-page="./Index" asp-route-Sort="@Model.PercentageSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Percentage)
                 </a>
             </th>
             @if (Model.SteamSignedIn)
             {
                 <th class="achieved-col">
-                    <a asp-page="./Index" asp-route-Sort="@Model.AchievedSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty">
+                    <a asp-page="./Index" asp-route-Sort="@Model.AchievedSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                         @Html.DisplayNameFor(model => Model.Achievements[0].Achieved)
                     </a>
                 </th>

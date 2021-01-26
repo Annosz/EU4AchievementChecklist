@@ -6,9 +6,9 @@ namespace EU4AchievementChecklist.Pages
 {
     public class LoginModel : PageModel
     {
-        public IActionResult OnGet(string sort, string version, string difficulty)
+        public IActionResult OnGet(string sort, string version, string difficulty, string achieved)
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Page("/Index", pageHandler: null, values: new { sort, version, difficulty }, protocol: Request.Scheme) }, "Steam");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Page("/Index", pageHandler: null, values: new { sort, version, difficulty, achieved }, protocol: Request.Scheme) }, "Steam");
         }
     }
 }

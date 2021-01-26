@@ -132,6 +132,27 @@ main {
     padding-right: 2rem;
 }
 
+.filter-area {
+    display: flex;
+    margin: 2em 1em 1em 1em;
+}
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    background: bisque;
+    padding: 1em;
+    border: 4px solid burlywood;
+}
+.filter-element {
+    align-self: flex-end;
+    margin: .5em;
+}
+.filter-button {
+    align-self: flex-end;
+    width: 100px;
+}
+
 table {
     margin-top: 2rem;
 }
