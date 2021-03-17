@@ -45,6 +45,8 @@ namespace EU4AchievementChecklist
             services.AddScoped<WikiService>();
             services.AddScoped<SteamService>();
 
+            services.AddMemoryCache();
+
             services.AddRazorPages();
         }
 
@@ -65,6 +67,7 @@ namespace EU4AchievementChecklist
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseResponseCaching();
 
             app.UseRouting();
 

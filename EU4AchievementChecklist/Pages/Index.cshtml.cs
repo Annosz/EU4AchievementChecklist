@@ -13,8 +13,8 @@ namespace EU4AchievementChecklist.Pages
 {
     public class IndexModel : PageModel
     {
-        public WikiService _wiki { get; set; }
-        public SteamService _steam { get; set; }
+        private WikiService _wiki { get; set; }
+        private SteamService _steam { get; set; }
         public List<Achievement> Achievements { get; set; } = new List<Achievement>();
 
         public bool SteamSignedIn { get; set; } = false;

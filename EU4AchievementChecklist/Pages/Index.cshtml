@@ -87,7 +87,7 @@ else
         {
         <tr>
             <td class="image-col">
-                <img src="@string.Concat("https://eu4.paradoxwikis.com", item.Image)" />
+                <img src="Image/@item.ImageName" alt="Achievement icon" />
             </td>
             <td class="name-col">
                 @Html.DisplayFor(modelItem => item.Name)<br />
@@ -109,7 +109,7 @@ else
                 <td class="achieved-col">
                     @if (item.Achieved)
                     {
-                        <img src="https://eu4.paradoxwikis.com/images/d/da/Ledger_yes.png" />
+                        <img src="/assets/ledger-yes.png" />
                     }
                 </td>
             }
