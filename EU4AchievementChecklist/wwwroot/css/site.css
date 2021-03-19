@@ -11,6 +11,10 @@ a {
   color: #0366d6;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -115,21 +119,36 @@ main {
     background-color: rgba(233, 167, 118, 0.65);
 }
 
-.steam-login {
+.steam-login, .steam-logged-in {
     padding: 1rem 1rem;
     border-radius: 14px;
     background-color: black;
     align-items: center;
     justify-content: center;
     display: flex;
-    flex-direction: row;
     align-content: center;
     color: white;
+}
+.steam-login {
+    flex-direction: row;
+}
+.steam-logged-in {
+    flex-direction: column;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .steam-login p {
     margin: unset;
     padding-right: 2rem;
+}
+
+.steam-logged-in img {
+    border: 5px solid white;
+    margin: 25px;
+}
+#detailedErrorView {
+    display: none;
 }
 
 .filter-area {

@@ -18,6 +18,7 @@ namespace EU4AchievementChecklist.Pages
         public List<Achievement> Achievements { get; set; } = new List<Achievement>();
 
         public bool SteamSignedIn { get; set; } = false;
+        public bool SteamAchievementsException { get; set; } = false;
 
         public string Sort { get; set; }
         public string NameSort { get; set; }
@@ -47,7 +48,15 @@ namespace EU4AchievementChecklist.Pages
             await _steam.AttachPercentageToAchievements(Achievements);
             if (SteamSignedIn = await _steam.Authenticate(HttpContext))
             {
-                await _steam.AttachCompletionToAchievements(Achievements);
+                try
+                {
+                    await _steam.AttachCompletionToAchievements(Achievements);
+                    SteamAchievementsException = false;
+                }
+                catch (Exception ex)
+                {
+                    SteamAchievementsException = true;
+                }
             }
 
             FilterAchievements(version, difficulty, achieved);

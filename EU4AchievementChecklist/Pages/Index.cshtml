@@ -13,9 +13,24 @@
 }
 else
 {
-<div class="steam-login">
-    <p>Steam user logged in</p>
-</div>
+    @if (Model.SteamAchievementsException)
+    {
+        <div class="steam-logged-in clickable" id="loggedInContainer" onclick="showDetailedError()">
+            <p>Steam user logged in</p>
+            <p id="showDetailedErrorText">Still not seeing any completed achievements? Click here to check out the possible errors!</p>
+            <div id="detailedErrorView">
+                <img src="~/assets/steam-settings.png" />
+                <p>The most likely problem is that the application can not access information about your Steam achievements. It can happen if your <b>Game details</b> are set to private.</p>
+                <p>To change these settings go to <a href="https://steamcommunity.com/my/edit/settings" target="_blank">https://steamcommunity.com/my/edit/settings</a> and set <b>My profile</b> and <b>Game details</b> to public. This means that people will be able to see your profile and your game statistics - but without this setting enabled this site won't be able to display which achievements have you earned. </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="steam-logged-in">
+            <p>Steam user logged in</p>
+        </div>
+    }
 }
 
 <div class="filter-area">
@@ -29,7 +44,7 @@ else
             Show achievements not more difficult than
             <select asp-for="Difficulty" asp-items="@Model.DifficultyFilterList"><option value="">(none)</option></select>
         </div>
-        @if (Model.SteamSignedIn)
+        @if (Model.SteamSignedIn && !Model.SteamAchievementsException)
         {
             <div class="filter-element">
                 Show achievements that are
@@ -72,7 +87,7 @@ else
                     @Html.DisplayNameFor(model => Model.Achievements[0].Percentage)
                 </a>
             </th>
-            @if (Model.SteamSignedIn)
+            @if (Model.SteamSignedIn && !Model.SteamAchievementsException)
             {
                 <th class="achieved-col">
                     <a asp-page="./Index" asp-route-Sort="@Model.AchievedSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
@@ -104,7 +119,7 @@ else
             <td class="percentage-col">
                 @Html.DisplayFor(modelItem => item.PercentageString)%<br />
             </td>
-            @if (Model.SteamSignedIn)
+            @if (Model.SteamSignedIn && !Model.SteamAchievementsException)
             {
                 <td class="achieved-col">
                     @if (item.Achieved)
