@@ -101,7 +101,7 @@ namespace EU4AchievementChecklist.Pages
             }
 
 
-            // Difficulty filtering
+            // Achieved filtering
             Achieved = achieved;
 
             AchievedFilterList = new List<SelectListItem>()
@@ -118,9 +118,9 @@ namespace EU4AchievementChecklist.Pages
 
         private void SortAchievements(string sort)
         {
-            Sort = sort;
+            Sort = sort ?? "Name";
 
-            NameSort = String.IsNullOrEmpty(Sort) ? "Name_desc" : "Name";
+            NameSort = Sort == "Name" ? "Name_desc" : "Name";
             DescriptionSort = Sort == "Description" ? "Description_desc" : "Description";
             DifficultySort = Sort == "Difficulty" ? "Difficulty_desc" : "Difficulty";
             VersionSort = Sort == "Version" ? "Version_desc" : "Version";

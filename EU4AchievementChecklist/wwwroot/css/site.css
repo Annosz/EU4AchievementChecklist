@@ -144,7 +144,7 @@ main {
 }
 
 .steam-logged-in img {
-    border: 5px solid white;
+    border: 5px solid antiquewhite;
     margin: 25px;
 }
 #detailedErrorView {
@@ -178,6 +178,10 @@ table {
 table th {
     height: 56px;
     text-align: center;
+}
+table th.sort-button a {
+    color: black;
+    font-weight: 900;
 }
 table td {
     border-bottom: 1px solid black;

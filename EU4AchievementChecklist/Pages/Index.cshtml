@@ -6,10 +6,10 @@
 
 @if (!Model.SteamSignedIn)
 {
-<a asp-page="./Login" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved" class="steam-login">
-    <p>Sign in with your Steam account to show completion info</p>
-    <input type="image" src="~/assets/steam-signing.png" />
-</a>
+    <a asp-page="./Login" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved" class="steam-login">
+        <p>Sign in with your Steam account to show completion info</p>
+        <input type="image" src="~/assets/steam-signing.png" />
+    </a>
 }
 else
 {
@@ -62,37 +62,103 @@ else
             <th class="image-col">
                 <!-- Image -->
             </th>
-            <th class="name-col">
+            <th class="name-col sort-button">
                 <a asp-page="./Index" asp-route-Sort="@Model.NameSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Name)
                 </a>
+                @if (String.IsNullOrEmpty(Model.Sort) || Model.Sort.Contains("Name"))
+                {
+                    if (String.IsNullOrEmpty(Model.Sort) || Model.NameSort.Contains("_desc"))
+                    {
+                        @FaIcons.SortUp.Create().WithStyle(FaStyles.Solid);
+                    }
+                    else
+                    {
+                        @FaIcons.SortDown.Create().WithStyle(FaStyles.Solid);
+                    }
+                }
             </th>
-            <th class="description-col">
+            <th class="description-col sort-button">
                 <a asp-page="./Index" asp-route-Sort="@Model.DescriptionSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Description)
                 </a>
+                @if (!String.IsNullOrEmpty(Model.Sort) && Model.Sort.Contains("Description"))
+                {
+                    if (Model.DescriptionSort.Contains("_desc"))
+                    {
+                        @FaIcons.SortUp.Create().WithStyle(FaStyles.Solid);
+                    }
+                    else
+                    {
+                        @FaIcons.SortDown.Create().WithStyle(FaStyles.Solid);
+                    }
+                }
             </th>
-            <th class="difficulty-col">
+            <th class="difficulty-col sort-button">
                 <a asp-page="./Index" asp-route-Sort="@Model.DifficultySort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Difficulty)
                 </a>
+                @if (!String.IsNullOrEmpty(Model.Sort) && Model.Sort.Contains("Difficulty"))
+                {
+                    if (Model.DifficultySort.Contains("_desc"))
+                    {
+                        @FaIcons.SortUp.Create().WithStyle(FaStyles.Solid);
+                    }
+                    else
+                    {
+                        @FaIcons.SortDown.Create().WithStyle(FaStyles.Solid);
+                    }
+                }
             </th>
-            <th class="version-col">
+            <th class="version-col sort-button">
                 <a asp-page="./Index" asp-route-Sort="@Model.VersionSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Version)
                 </a>
+                @if (!String.IsNullOrEmpty(Model.Sort) && Model.Sort.Contains("Version"))
+                {
+                    if (Model.VersionSort.Contains("_desc"))
+                    {
+                        @FaIcons.SortUp.Create().WithStyle(FaStyles.Solid);
+                    }
+                    else
+                    {
+                        @FaIcons.SortDown.Create().WithStyle(FaStyles.Solid);
+                    }
+                }
             </th>
-            <th class="percentage-col">
+            <th class="percentage-col sort-button">
                 <a asp-page="./Index" asp-route-Sort="@Model.PercentageSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                     @Html.DisplayNameFor(model => Model.Achievements[0].Percentage)
                 </a>
+                @if (!String.IsNullOrEmpty(Model.Sort) && Model.Sort.Contains("Percentage"))
+                {
+                    if (Model.PercentageSort.Contains("_desc"))
+                    {
+                        @FaIcons.SortUp.Create().WithStyle(FaStyles.Solid);
+                    }
+                    else
+                    {
+                        @FaIcons.SortDown.Create().WithStyle(FaStyles.Solid);
+                    }
+                }
             </th>
             @if (Model.SteamSignedIn && !Model.SteamAchievementsException)
             {
-                <th class="achieved-col">
+                <th class="achieved-col sort-button">
                     <a asp-page="./Index" asp-route-Sort="@Model.AchievedSort" asp-route-Version="@Model.Version" asp-route-Difficulty="@Model.Difficulty" asp-route-Achieved="@Model.Achieved">
                         @Html.DisplayNameFor(model => Model.Achievements[0].Achieved)
                     </a>
+                    @if (!String.IsNullOrEmpty(Model.Sort) && Model.Sort.Contains("Achieved"))
+                    {
+                        if (Model.AchievedSort.Contains("_desc"))
+                        {
+                            @FaIcons.SortUp.Create().WithStyle(FaStyles.Solid);
+                        }
+                        else
+                        {
+                            @FaIcons.SortDown.Create().WithStyle(FaStyles.Solid);
+                        }
+                    }
                 </th>
             }
         </tr>
@@ -100,35 +166,35 @@ else
     <tbody>
         @foreach (var item in Model.Achievements)
         {
-        <tr>
-            <td class="image-col">
-                <img src="Image/@item.ImageName" alt="Achievement icon" />
-            </td>
-            <td class="name-col">
-                @Html.DisplayFor(modelItem => item.Name)<br />
-            </td>
-            <td class="description-col">
-                @Html.DisplayFor(modelItem => item.Description)<br />
-            </td>
-            <td class="difficulty-col">
-                @Html.DisplayFor(modelItem => item.Difficulty)<br />
-            </td>
-            <td class="version-col">
-                @Html.DisplayFor(modelItem => item.Version)<br />
-            </td>
-            <td class="percentage-col">
-                @Html.DisplayFor(modelItem => item.PercentageString)%<br />
-            </td>
-            @if (Model.SteamSignedIn && !Model.SteamAchievementsException)
-            {
-                <td class="achieved-col">
-                    @if (item.Achieved)
-                    {
-                        <img src="/assets/ledger-yes.png" />
-                    }
+            <tr>
+                <td class="image-col">
+                    <img src="Image/@item.ImageName" alt="Achievement icon" />
                 </td>
-            }
-        </tr>
+                <td class="name-col">
+                    @Html.DisplayFor(modelItem => item.Name)<br />
+                </td>
+                <td class="description-col">
+                    @Html.DisplayFor(modelItem => item.Description)<br />
+                </td>
+                <td class="difficulty-col">
+                    @Html.DisplayFor(modelItem => item.Difficulty)<br />
+                </td>
+                <td class="version-col">
+                    @Html.DisplayFor(modelItem => item.Version)<br />
+                </td>
+                <td class="percentage-col">
+                    @Html.DisplayFor(modelItem => item.PercentageString)%<br />
+                </td>
+                @if (Model.SteamSignedIn && !Model.SteamAchievementsException)
+                {
+                    <td class="achieved-col">
+                        @if (item.Achieved)
+                        {
+                            <img src="/assets/ledger-yes.png" />
+                        }
+                    </td>
+                }
+            </tr>
         }
     </tbody>
 </table>
