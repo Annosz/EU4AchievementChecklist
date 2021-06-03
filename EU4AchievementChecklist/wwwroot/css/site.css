@@ -138,8 +138,10 @@ main {
     padding-right: 5%;
 }
 
-.steam-login p {
+.steam-login p, .steam-logged-in p {
     margin: unset;
+}
+.steam-login p {
     padding-right: 2rem;
 }
 
