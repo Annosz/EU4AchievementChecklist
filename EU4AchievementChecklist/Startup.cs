@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Net;
 
 namespace EU4AchievementChecklist
 {
@@ -26,6 +28,15 @@ namespace EU4AchievementChecklist
                 options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
                 options.OnAppendCookie = cookieContext => SameSiteCookieCompatibility.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
                 options.OnDeleteCookie = cookieContext => SameSiteCookieCompatibility.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+            });
+
+            // Solve Azure infinite redirect issue
+            // Based on https://stackoverflow.com/questions/48479608/infinite-redirect-loop-in-asp-net-core-while-enforcing-ssl
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("::ffff:100.64.0.0"), 106));
             });
 
             services
