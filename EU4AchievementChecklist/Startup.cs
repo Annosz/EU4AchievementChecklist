@@ -69,7 +69,8 @@ namespace EU4AchievementChecklist
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                //app.UseExceptionHandler("/Error");
+                app.UseDeveloperExceptionPage();
                 app.UseHsts();
                 app.UseReverseProxyHttpsEnforcer();
             }
