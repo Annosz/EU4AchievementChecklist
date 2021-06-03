@@ -36,7 +36,7 @@ namespace EU4AchievementChecklist
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("20.40.202.15"), 0));
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("::ffff:20.40.202.15"), 106));
             });
 
             services
@@ -70,7 +70,6 @@ namespace EU4AchievementChecklist
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseForwardedHeaders();
                 app.UseHsts();
                 app.UseReverseProxyHttpsEnforcer();
             }
