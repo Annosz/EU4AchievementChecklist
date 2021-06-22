@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -17,8 +16,6 @@ namespace EU4AchievementChecklist
 {
     public class Startup
     {
-        public Startup() { }
-
         public void ConfigureServices(IServiceCollection services)
         {
             // Same site cookie policy edits needed for external OpenIdConnect authentication

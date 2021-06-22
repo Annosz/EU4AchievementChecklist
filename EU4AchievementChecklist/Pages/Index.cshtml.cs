@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using EU4AchievementChecklist.Helpers.Misc;
 using EU4AchievementChecklist.Models;
 using EU4AchievementChecklist.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,20 +12,20 @@ namespace EU4AchievementChecklist.Pages
 {
     public class IndexModel : PageModel
     {
-        private WikiService _wiki { get; set; }
-        private SteamService _steam { get; set; }
+        private readonly WikiService _wiki;
+        private readonly SteamService _steam;
         public List<Achievement> Achievements { get; set; } = new List<Achievement>();
 
-        public bool SteamSignedIn { get; set; } = false;
-        public bool SteamAchievementsException { get; set; } = false;
+        public bool SteamSignedIn { get; private set; }
+        public bool SteamAchievementsException { get; private set; }
 
         public string Sort { get; set; }
-        public string NameSort { get; set; }
-        public string DescriptionSort { get; set; }
-        public string DifficultySort { get; set; }
-        public string VersionSort { get; set; }
-        public string PercentageSort { get; set; }
-        public string AchievedSort { get; set; }
+        public string NameSort { get; private set; }
+        public string DescriptionSort { get; private set; }
+        public string DifficultySort { get; private set; }
+        public string VersionSort { get; private set; }
+        public string PercentageSort { get; private set; }
+        public string AchievedSort { get; private set; }
 
         public string Version { get; set; }
         public List<SelectListItem> VersionFilterList { get; set; }
@@ -53,7 +52,7 @@ namespace EU4AchievementChecklist.Pages
                     await _steam.AttachCompletionToAchievements(Achievements);
                     SteamAchievementsException = false;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     SteamAchievementsException = true;
                 }

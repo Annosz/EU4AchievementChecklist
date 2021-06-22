@@ -17,8 +17,8 @@ namespace EU4AchievementChecklist.Services
 {
     public class SteamService
     {
-        private const string _percentageCacheKey = "percentage_cache_key";
-        private const string _achievedCacheKey = "achieved_cache_key";
+        private readonly string _percentageCacheKey = "percentage_cache_key";
+        private readonly string _achievedCacheKey = "achieved_cache_key";
         private readonly IMemoryCache _cache;
 
         private string SteamID { get; set; }
@@ -56,7 +56,7 @@ namespace EU4AchievementChecklist.Services
             foreach (var achievement in achievements)
             {
                 int maxMatch = achievementPercentages.Max(ac => FuzzyMatchAPIName(ac.APIName, achievement.Name));
-                achievementNameMatcher.Add(achievement.Name, achievementPercentages.FirstOrDefault(ac => FuzzyMatchAPIName(ac.APIName, achievement.Name) == maxMatch).APIName);
+                achievementNameMatcher.Add(achievement.Name, achievementPercentages.FirstOrDefault(ac => FuzzyMatchAPIName(ac.APIName, achievement.Name) == maxMatch)?.APIName);
             }
 
             achievements.ForEach(a => a.Percentage = achievementPercentages.FirstOrDefault(ac => ac.APIName == achievementNameMatcher[a.Name])?.Percent ?? 0);

@@ -1,6 +1,4 @@
-﻿using SteamSharp;
-
-namespace EU4AchievementChecklist.Models
+﻿namespace EU4AchievementChecklist.Models
 {
     public class Achievement
     {

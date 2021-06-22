@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EU4AchievementChecklist.Helpers.Misc
 {
@@ -13,6 +10,9 @@ namespace EU4AchievementChecklist.Helpers.Misc
         {
             public int Compare(string ver1, string ver2)
             {
+                if (ver1 == null || ver2 == null)
+                    return 0;
+
                 if (ver1.Length.CompareTo(ver2.Length) != 0)
                     return ver1.Length.CompareTo(ver2.Length);
 

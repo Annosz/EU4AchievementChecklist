@@ -11,8 +11,8 @@ namespace EU4AchievementChecklist.Services
 {
     public class WikiService
     {
-        private const string _wikiCacheKey = "wiki_cache_key";
-        private const string _imageCacheKey = "image_cache_key";
+        private readonly string _wikiCacheKey = "wiki_cache_key";
+        private readonly string _imageCacheKey = "image_cache_key";
         private readonly IMemoryCache _cache;
 
         public WikiService(IMemoryCache cache)
@@ -22,12 +22,12 @@ namespace EU4AchievementChecklist.Services
 
         public async Task<List<Achievement>> CreateWikiPart()
         {
-            if (_cache.TryGetValue(_wikiCacheKey, out List<Achievement> Achievements))
+            if (_cache.TryGetValue(_wikiCacheKey, out List<Achievement> achievements))
             {
-                return Achievements;
+                return achievements;
             }
 
-            Achievements = new List<Achievement>();
+            achievements = new List<Achievement>();
 
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.GetAsync("https://eu4.paradoxwikis.com/Achievements"))
@@ -68,19 +68,17 @@ namespace EU4AchievementChecklist.Services
                                 case (6):
                                     achievement.Difficulty = Regex.Replace(cell.InnerText, @"\s+", "");
                                     break;
-                                default:
-                                    break;
                             }
                         }
 
-                        Achievements.Add(achievement);
+                        achievements.Add(achievement);
                     }
                 }
             }
 
-            _cache.Set(_wikiCacheKey, Achievements, TimeSpan.FromDays(3));
+            _cache.Set(_wikiCacheKey, achievements, TimeSpan.FromDays(3));
 
-            return Achievements;
+            return achievements;
         }
 
         private async Task<byte[]> GetImage(string fileName)
